@@ -43,6 +43,7 @@ jobs:
       
   build-and-push-docker-image:
     runs-on: ubuntu-latest
+    needs: test-application
     name: Build et push de l'image docker
     permissions:
       contents: read
