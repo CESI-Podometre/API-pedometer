@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  webapi:
+    image: ghcr.io/cesi-podometre/api-pedometer/webapi:dev
+    ports:
+      - "80:80"
+    depends_on:
+        - db
+    networks:
+      - starfit-db-network
+      
+  db:
+    image: "postgres:16"
+    restart: always
+    environment:
+      POSTGRES_USER: starfitdev
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: starfit
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/:/var/lib/postgresql/data
+    networks:
+      - starfit-db-network
+
+networks:
+  starfit-db-network:
+    driver: bridge
