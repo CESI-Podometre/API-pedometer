@@ -1,37 +1,37 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using StarFitApi.Models.Dto.Trophy;
+using StarFitApi.Models.Dto.Badge;
 
 namespace StarFitApi.Models.Database;
 
-[Table("Trophies")]
-public class Trophy : IBaseModel<Trophy, TrophyCreateDto, TrophyUpdateDto>
+[Table("Badges")]
+public class Badge : IBaseModel<Badge, BadgeCreateDto, BadgeUpdateDto>
 {
-    public Trophy() { }
+    public Badge() { }
     
-    public static Trophy Create(TrophyCreateDto trophyCreateDto)
+    public static Badge Create(BadgeCreateDto badgeCreateDto)
     {
-        return new Trophy
+        return new Badge
         {
-            Title = trophyCreateDto.Title,
-            Description = trophyCreateDto.Description,
+            Title = badgeCreateDto.Title,
+            Description = badgeCreateDto.Description,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
     }
     
-    public Trophy Update(TrophyUpdateDto trophyUpdateDto)
+    public Badge Update(BadgeUpdateDto badgeUpdateDto)
     {
-        Title = trophyUpdateDto.Title;
-        Description = trophyUpdateDto.Description;
+        Title = badgeUpdateDto.Title;
+        Description = badgeUpdateDto.Description;
         UpdatedAt = DateTime.Now;
         return this;
     }
     
-    public static DbSet<Trophy> GetDbSet(DataContext context)
+    public static DbSet<Badge> GetDbSet(DataContext context)
     {
-        return context.Trophies;
+        return context.Badges;
     }
     
     [Column("id")]

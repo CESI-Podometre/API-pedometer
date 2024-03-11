@@ -12,7 +12,7 @@ using StarFitApi.Models;
 namespace StarFitApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240305205712_InitialMigration")]
+    [Migration("20240311134545_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace StarFitApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("StarFitApi.Models.Database.Challenge", b =>
+            modelBuilder.Entity("StarFitApi.Models.Database.Badge", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,103 +33,7 @@ namespace StarFitApi.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("description");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end_date");
-
-                    b.Property<bool>("IsGlobal")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_global");
-
-                    b.Property<int>("Objective")
-                        .HasColumnType("integer")
-                        .HasColumnName("objective");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start_date");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("title");
-
-                    b.Property<Guid>("TrophyId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("trophy_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrophyId");
-
-                    b.ToTable("Challenges");
-                });
-
-            modelBuilder.Entity("StarFitApi.Models.Database.DayOfWalk", b =>
-                {
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("date");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.Property<int>("Steps")
-                        .HasColumnType("integer")
-                        .HasColumnName("steps");
-
-                    b.HasKey("Date", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DayOfWalk");
-                });
-
-            modelBuilder.Entity("StarFitApi.Models.Database.TrophiesToUser", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.Property<Guid>("TrophyId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("trophy_id");
-
-                    b.Property<DateTime>("ObtainedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("obtained_at");
-
-                    b.HasKey("UserId", "TrophyId");
-
-                    b.HasIndex("TrophyId");
-
-                    b.ToTable("TrophiesToUser");
-                });
-
-            modelBuilder.Entity("StarFitApi.Models.Database.Trophy", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
@@ -151,7 +55,7 @@ namespace StarFitApi.Migrations
                         .HasColumnName("title");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UserId")
@@ -161,7 +65,103 @@ namespace StarFitApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Trophies");
+                    b.ToTable("Badges");
+                });
+
+            modelBuilder.Entity("StarFitApi.Models.Database.BadgesToUser", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("BadgeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("badge_id");
+
+                    b.Property<DateTime>("ObtainedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("obtained_at");
+
+                    b.HasKey("UserId", "BadgeId");
+
+                    b.HasIndex("BadgeId");
+
+                    b.ToTable("BadgesToUser");
+                });
+
+            modelBuilder.Entity("StarFitApi.Models.Database.Challenge", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("BadgeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("badge_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_date");
+
+                    b.Property<bool>("IsGlobal")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_global");
+
+                    b.Property<int>("Objective")
+                        .HasColumnType("integer")
+                        .HasColumnName("objective");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_date");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BadgeId");
+
+                    b.ToTable("Challenges");
+                });
+
+            modelBuilder.Entity("StarFitApi.Models.Database.DayOfWalk", b =>
+                {
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("date");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<int>("Steps")
+                        .HasColumnType("integer")
+                        .HasColumnName("steps");
+
+                    b.HasKey("Date", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DayOfWalk");
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.User", b =>
@@ -172,7 +172,7 @@ namespace StarFitApi.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Email")
@@ -194,7 +194,7 @@ namespace StarFitApi.Migrations
                         .HasColumnName("last_name");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
@@ -205,15 +205,41 @@ namespace StarFitApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("StarFitApi.Models.Database.Challenge", b =>
+            modelBuilder.Entity("StarFitApi.Models.Database.Badge", b =>
                 {
-                    b.HasOne("StarFitApi.Models.Database.Trophy", "Trophy")
-                        .WithMany("Challenges")
-                        .HasForeignKey("TrophyId")
+                    b.HasOne("StarFitApi.Models.Database.User", null)
+                        .WithMany("Trophies")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("StarFitApi.Models.Database.BadgesToUser", b =>
+                {
+                    b.HasOne("StarFitApi.Models.Database.Badge", "Badge")
+                        .WithMany()
+                        .HasForeignKey("BadgeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Trophy");
+                    b.HasOne("StarFitApi.Models.Database.User", "User")
+                        .WithMany("TrophiesToUser")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Badge");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StarFitApi.Models.Database.Challenge", b =>
+                {
+                    b.HasOne("StarFitApi.Models.Database.Badge", "Badge")
+                        .WithMany("Challenges")
+                        .HasForeignKey("BadgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Badge");
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.DayOfWalk", b =>
@@ -227,33 +253,7 @@ namespace StarFitApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("StarFitApi.Models.Database.TrophiesToUser", b =>
-                {
-                    b.HasOne("StarFitApi.Models.Database.Trophy", "Trophy")
-                        .WithMany()
-                        .HasForeignKey("TrophyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StarFitApi.Models.Database.User", "User")
-                        .WithMany("TrophiesToUser")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trophy");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("StarFitApi.Models.Database.Trophy", b =>
-                {
-                    b.HasOne("StarFitApi.Models.Database.User", null)
-                        .WithMany("Trophies")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("StarFitApi.Models.Database.Trophy", b =>
+            modelBuilder.Entity("StarFitApi.Models.Database.Badge", b =>
                 {
                     b.Navigation("Challenges");
                 });

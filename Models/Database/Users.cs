@@ -59,9 +59,9 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
     
-    public IEnumerable<TrophiesToUser> TrophiesToUser { get; set; } = null!;
+    public IEnumerable<BadgesToUser> TrophiesToUser { get; set; } = null!;
     
-    public IEnumerable<Trophy> Trophies { get; set; } = null!;
+    public IEnumerable<Badge> Trophies { get; set; } = null!;
     
     public IEnumerable<DayOfWalk> DaysOfWalk { get; set; } = null!;
 }

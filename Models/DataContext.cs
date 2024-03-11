@@ -19,14 +19,14 @@ public class DataContext : DbContext
         modelBuilder.Entity<DayOfWalk>();
         
         modelBuilder.Entity<Challenge>();
-        modelBuilder.Entity<Trophy>();
-        modelBuilder.Entity<TrophiesToUser>();
+        modelBuilder.Entity<Badge>();
+        modelBuilder.Entity<BadgesToUser>();
     }
     
     public required DbSet<User> Users { get; set; }
     public required DbSet<DayOfWalk> DaysOfWalk { get; set; }
     
     public required DbSet<Challenge> Challenges { get; set; }
-    public required DbSet<Trophy> Trophies { get; set; }
-    public required DbSet<TrophiesToUser> TrophiesToUser { get; set; }
+    public required DbSet<Badge> Badges { get; set; }
+    public required DbSet<BadgesToUser> TrophiesToUser { get; set; }
 }

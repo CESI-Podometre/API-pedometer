@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Options;
 using StarFitApi.Config.Swagger;
 using StarFitApi.Models.Database;
+using StarFitApi.Services.BadgeServices;
 using StarFitApi.Services.ChallengeServices;
 using StarFitApi.Services.DayOfWalkServices;
-using StarFitApi.Services.TrophyServices;
 using StarFitApi.Services.UserServices;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -18,6 +18,6 @@ public static class DependencyInjections
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IChallengeService, ChallengeService>();
         services.AddScoped<IDayOfWalkService, DayOfWalkService>();
-        services.AddScoped<ITrophyService, TrophyService>();
+        services.AddScoped<IBadgeService, BadgeService>();
     }
 }

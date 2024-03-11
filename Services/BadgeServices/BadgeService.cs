@@ -1,11 +1,11 @@
 using StarFitApi.Models;
 using StarFitApi.Models.Database;
-using StarFitApi.Models.Dto.Trophy;
+using StarFitApi.Models.Dto.Badge;
 using StarFitApi.Services.BaseServices;
 
-namespace StarFitApi.Services.TrophyServices;
+namespace StarFitApi.Services.BadgeServices;
 
-public class TrophyService : BaseService<Trophy, TrophyCreateDto, TrophyUpdateDto>, ITrophyService
+public class BadgeService : BaseService<Badge, BadgeCreateDto, BadgeUpdateDto>, IBadgeService
 {
     #region MyRegion
 
@@ -15,7 +15,7 @@ public class TrophyService : BaseService<Trophy, TrophyCreateDto, TrophyUpdateDt
 
     #region MyRegion
 
-    public TrophyService(DataContext context) : base(context)
+    public BadgeService(DataContext context) : base(context)
     {
         _context = context;
     }

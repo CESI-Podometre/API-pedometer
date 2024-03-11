@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StarFitApi.Models.Database;
 
-[Table("TrophiesToUser")]
-[PrimaryKey(nameof(UserId), nameof(TrophyId))]
-public class TrophiesToUser
+[Table("BadgesToUser")]
+[PrimaryKey(nameof(UserId), nameof(BadgeId))]
+public class BadgesToUser
 {
     [Column("user_id")]
     public Guid UserId { get; set; }
     
-    [Column("trophy_id")]
-    public Guid TrophyId { get; set; }
+    [Column("badge_id")]
+    public Guid BadgeId { get; set; }
     
     [Column("obtained_at")]
     public DateTime ObtainedAt { get; init; }
@@ -19,6 +19,6 @@ public class TrophiesToUser
     [ForeignKey(nameof(UserId))]
     public User User { get; set; } = null!;
     
-    [ForeignKey(nameof(TrophyId))]
-    public Trophy Trophy { get; set; } = null!;
+    [ForeignKey(nameof(BadgeId))]
+    public Badge Badge { get; set; } = null!;
 }

@@ -10,7 +10,7 @@ public class ChallengeCreateDto : IDataTransferObject
     public DateTime? EndDate { get; set; }
     public bool IsGlobal { get; set; }
     public int Objective { get; set; }
-    public Guid TrophyId { get; set; }
+    public Guid BadgeId { get; set; }
 
     private class Validator:AbstractValidator<ChallengeCreateDto>
     {
@@ -20,7 +20,7 @@ public class ChallengeCreateDto : IDataTransferObject
             RuleFor(x => x.Description).NotEmpty().MaximumLength(255);
             RuleFor(x => x.StartDate).NotEmpty();
             RuleFor(x => x.Objective).NotEmpty();
-            RuleFor(x => x.TrophyId).NotEmpty();
+            RuleFor(x => x.BadgeId).NotEmpty();
         }
     }
 }

@@ -46,8 +46,8 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
     [Key]
     public Guid Id { get; init; } = Guid.NewGuid();
     
-    [Column("trophy_id")]
-    public Guid TrophyId { get; set; }
+    [Column("badge_id")]
+    public Guid BadgeId { get; set; }
     
     [Column("title")]
     [MaxLength(50)]
@@ -75,6 +75,6 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
     [Column("updated_at")]
     public DateTime UpdatedAt { get; init; }
     
-    [ForeignKey("TrophyId")]
-    public Trophy Trophy { get; set; } = null!;
+    [ForeignKey("BadgeId")]
+    public Badge Badge { get; set; } = null!;
 }

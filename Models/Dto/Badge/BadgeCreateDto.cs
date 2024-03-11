@@ -1,14 +1,14 @@
 using FluentValidation;
 
-namespace StarFitApi.Models.Dto.Trophy;
+namespace StarFitApi.Models.Dto.Badge;
 
-public class TrophyCreateDto : IDataTransferObject
+public class BadgeCreateDto : IDataTransferObject
 {
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;
     public IFormFile Image { get; set; } = null!;
     
-    private class Validator:AbstractValidator<TrophyCreateDto>
+    private class Validator:AbstractValidator<BadgeCreateDto>
     {
         public Validator()
         {

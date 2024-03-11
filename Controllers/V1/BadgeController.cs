@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
 using StarFitApi.Models;
 using StarFitApi.Models.Database;
+using StarFitApi.Models.Dto.Badge;
 using StarFitApi.Models.Dto.Challenge;
-using StarFitApi.Models.Dto.Trophy;
+using StarFitApi.Services.BadgeServices;
 using StarFitApi.Services.ChallengeServices;
-using StarFitApi.Services.TrophyServices;
 
 namespace StarFitApi.Controllers.V1;
 
 [ApiController]
-[Route("api/v{version:apiVersion}/trophies")]
+[Route("api/v{version:apiVersion}/badges")]
 [ApiVersion("1.0")]
-public class TrophyController : ControllerBaseExtended<Trophy, TrophyCreateDto, TrophyUpdateDto, ITrophyService>
+public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, BadgeUpdateDto, IBadgeService>
 {
     #region Fields
 
@@ -23,7 +23,7 @@ public class TrophyController : ControllerBaseExtended<Trophy, TrophyCreateDto, 
     
     #region Constructor
     
-    public TrophyController(ITrophyService trophyService, IChallengeService challengeService) : base(trophyService)
+    public BadgeController(IBadgeService badgeService, IChallengeService challengeService) : base(badgeService)
     {
         _challengeService = challengeService;
     }
