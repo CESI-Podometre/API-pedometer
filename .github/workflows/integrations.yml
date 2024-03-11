@@ -90,7 +90,7 @@ jobs:
         uses: docker/metadata-action@v3
         id: meta
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/webapi
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/migrations
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -98,5 +98,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           context: .
-          target: webapi
+          target: migrations
           platforms: linux/amd64
