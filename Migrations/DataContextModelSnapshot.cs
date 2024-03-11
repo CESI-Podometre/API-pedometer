@@ -73,7 +73,7 @@ namespace StarFitApi.Migrations
 
                     b.HasIndex("TrophyId");
 
-                    b.ToTable("Challenges");
+                    b.ToTable("Challenges", (string)null);
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.DayOfWalk", b =>
@@ -94,7 +94,7 @@ namespace StarFitApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DayOfWalk");
+                    b.ToTable("DayOfWalk", (string)null);
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.TrophiesToUser", b =>
@@ -115,7 +115,7 @@ namespace StarFitApi.Migrations
 
                     b.HasIndex("TrophyId");
 
-                    b.ToTable("TrophiesToUser");
+                    b.ToTable("TrophiesToUser", (string)null);
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.Trophy", b =>
@@ -158,7 +158,7 @@ namespace StarFitApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Trophies");
+                    b.ToTable("Trophies", (string)null);
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.User", b =>
@@ -199,7 +199,7 @@ namespace StarFitApi.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("StarFitApi.Models.Database.Challenge", b =>

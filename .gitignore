@@ -52,3 +52,4 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 /database/
+/appsettings.Production.json
