@@ -20,6 +20,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       target: migrations
+    restart: "on-failure"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=User ID =postgres;Password=${POSTGRES_PASSWORD};Server=starfit-db;Port=5432;Database=starfit; Integrated Security=true;Pooling=true;

@@ -12,12 +12,13 @@ COPY . .
 WORKDIR "/src/"
 RUN dotnet build "StarFitApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build as migrations
+FROM mcr.microsoft.com/dotnet/sdk:7.0 as migrations
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src/
+COPY . .
 RUN dotnet tool install --global dotnet-ef --version 7.0.15
 ENV PATH="${PATH}:/root/.dotnet/tools"
-ENTRYPOINT ["dotnet", "ef", "database", "update", "--", "--environment", "Production"]
+ENTRYPOINT ["dotnet", "ef", "database", "update"]
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
