@@ -41,7 +41,7 @@ jobs:
     - name: Test
       run: dotnet test --verbosity normal
       
-  build-and-push-docker-image:
+  build-and-push-webapi-image:
     runs-on: ubuntu-latest
     needs: test-application
     name: Build et push de l'image docker
@@ -51,10 +51,6 @@ jobs:
     steps:
         - name: Checkout
           uses: actions/checkout@v4
-        - name: Create appsettings file
-          run: |
-            cp appsettings.Development.json appsettings.json
-            sed -i "s/POSTGRES_PASSWORD/${{ secrets.POSTGRES_PASSWORD }}/g" appsettings.json
         - uses: docker/login-action@v3
           with:
             registry: ${{ env.REGISTRY }}
@@ -72,4 +68,35 @@ jobs:
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
             context: .
+            target: webapi
             platforms: linux/amd64
+
+  build-and-push-migrations-image:
+    runs-on: ubuntu-latest
+    needs: test-application
+    name: Build et push de l'image docker
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata
+        uses: docker/metadata-action@v3
+        id: meta
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/webapi
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: .
+          target: webapi
+          platforms: linux/amd64

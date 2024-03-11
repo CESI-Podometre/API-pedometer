@@ -7,8 +7,24 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=User ID =postgres;Password=${POSTGRES_PASSWORD};Server=starfit-db;Port=5432;Database=starfit; Integrated Security=true;Pooling=true;
     depends_on:
         - starfit-db
+    networks:
+      - starfit-db-network
+        
+  migrations:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: migrations
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=User ID =postgres;Password=${POSTGRES_PASSWORD};Server=starfit-db;Port=5432;Database=starfit; Integrated Security=true;Pooling=true;
+    depends_on:
+      - starfit-webapi
     networks:
       - starfit-db-network
       

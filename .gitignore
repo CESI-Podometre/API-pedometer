@@ -31,8 +31,6 @@ uploads
 
 .env
 
-appsettings.json
-
 ./database/*
 ./database
 
