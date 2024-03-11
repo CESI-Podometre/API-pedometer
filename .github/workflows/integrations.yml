@@ -68,7 +68,7 @@ jobs:
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
             context: .
-            target: webapi
+            target: final
             platforms: linux/amd64
 
   build-and-push-migrations-image:
