@@ -17,6 +17,7 @@ public class DataContext : DbContext
 
         modelBuilder.Entity<User>();
         modelBuilder.Entity<DayOfWalk>();
+        modelBuilder.Entity<Article>();
         
         modelBuilder.Entity<Challenge>();
         modelBuilder.Entity<Badge>();
@@ -25,6 +26,7 @@ public class DataContext : DbContext
     
     public required DbSet<User> Users { get; set; }
     public required DbSet<DayOfWalk> DaysOfWalk { get; set; }
+    public required DbSet<Article> Articles { get; set; }
     
     public required DbSet<Challenge> Challenges { get; set; }
     public required DbSet<Badge> Badges { get; set; }
