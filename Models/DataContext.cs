@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StarFitApi.Helpers;
 using StarFitApi.Models.Database;
 
 namespace StarFitApi.Models;
@@ -15,13 +16,8 @@ public class DataContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>();
-        modelBuilder.Entity<DayOfWalk>();
-        modelBuilder.Entity<Article>();
-        
-        modelBuilder.Entity<Challenge>();
-        modelBuilder.Entity<Badge>();
-        modelBuilder.Entity<BadgesToUser>();
+        var dataSeeder = new DataSeeder(modelBuilder);
+        dataSeeder.Seed();
     }
     
     public required DbSet<User> Users { get; set; }
