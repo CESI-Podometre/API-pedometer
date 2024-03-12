@@ -26,6 +26,7 @@ public class DataSeeder
     private List<Article> _articles = new();
     private List<Challenge> _challenges = new();
     private List<Badge> _badges = new();
+    private List<BadgesToUser> _badgesToUsers = new();
     
     #endregion
     
@@ -61,7 +62,6 @@ public class DataSeeder
     {
         for (var i = 0; i < 100; i++)
         {
-            var guid = Guid.NewGuid();
             var dayOfWalk = new DayOfWalk
             {
                 UserId = _users[i % 10].Id,
@@ -135,6 +135,21 @@ public class DataSeeder
         }
         _modelBuilder.Entity<Challenge>().HasData(_challenges);
     }
+
+    private void GenerateBadgesToUser()
+    {
+        for (var i = 0; i < 10; i++)
+        {
+            var badgeToUser = new BadgesToUser()
+            {
+                BadgeId = _badges[i % 10].Id,
+                UserId = _users[i % 10].Id,
+                ObtainedAt = DateTime.Now
+            };
+            _badgesToUsers.Add(badgeToUser);
+        }
+        _modelBuilder.Entity<BadgesToUser>().HasData(_badgesToUsers);
+    }
     
     public void Seed()
     {
@@ -143,6 +158,7 @@ public class DataSeeder
         GenerateChallenges();
         GenerateArticles();
         GenerateDaysOfWalk();
+        GenerateBadgesToUser();
     }
     
     #endregion

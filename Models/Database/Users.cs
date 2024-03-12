@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using StarFitApi.Models.Dto.User;
 
@@ -47,33 +46,30 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
-    
-    [JsonIgnore]
-    public IEnumerable<BadgesToUser> BadgesToUsers { get; set; } = null!;
 
-    [NotMapped]
-    public IEnumerable<Badge> Badges
-    {
-        get { return BadgesToUsers.Select(btu => btu.Badge); }
-    }
-    public IEnumerable<DayOfWalk> DaysOfWalk { get; set; } = null!;
+    public IEnumerable<BadgesToUser>? BadgesToUsers { get; set; }
+
+    public IEnumerable<Badge>? Badges { get; set; }
+
+    public IEnumerable<DayOfWalk>? DaysOfWalk { get; set; }
 
     public void FixDaysOfWalk()
     {
+        DaysOfWalk ??= new List<DayOfWalk> { new DayOfWalk { Date = DateTime.Now, UserId = Id, Steps = 0 } };
         DaysOfWalk = DaysOfWalk.OrderBy(dow => dow.Date).ToList();
         FillDaysOfWalk(DaysOfWalk.Last().Date);
     }
     
     private void FillDaysOfWalk(DateTime lastDay, int index = 0)
     {
-        var dayOfWalk = DaysOfWalk.ElementAt(index);
+        var dayOfWalk = DaysOfWalk!.ElementAt(index);
         if (dayOfWalk.Date.Date == lastDay.Date) return;
-        var nextDayOfWalk = DaysOfWalk.ElementAt(index + 1);
+        var nextDayOfWalk = DaysOfWalk!.ElementAt(index + 1);
         if (dayOfWalk.Date.AddDays(1).Date != nextDayOfWalk.Date.Date)
         {
-            DaysOfWalk = DaysOfWalk.Take(index + 1)
+            DaysOfWalk = DaysOfWalk!.Take(index + 1)
                 .Concat(new List<DayOfWalk> {new DayOfWalk {Date = dayOfWalk.Date.AddDays(1), UserId = dayOfWalk.UserId, Steps = 0}})
-                .Concat(DaysOfWalk.Skip(index + 1))
+                .Concat(DaysOfWalk!.Skip(index + 1))
                 .ToList();
             FillDaysOfWalk(lastDay, index + 1);
         }

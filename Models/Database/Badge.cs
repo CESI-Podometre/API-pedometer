@@ -38,7 +38,7 @@ public class Badge : IBaseModel<Badge, BadgeCreateDto, BadgeUpdateDto>
     
     [Column("id")]
     [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; init; } = Guid.NewGuid();
     
     [Column("title")]
     [MaxLength(50)]
@@ -58,5 +58,5 @@ public class Badge : IBaseModel<Badge, BadgeCreateDto, BadgeUpdateDto>
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
     
-    public IEnumerable<Challenge> Challenges { get; set; } = null!;
+    public IEnumerable<Challenge> Challenges { get; init; } = null!;
 }

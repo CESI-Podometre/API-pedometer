@@ -20,6 +20,7 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
             EndDate = challengeCreateDto.EndDate,
             IsGlobal = challengeCreateDto.IsGlobal,
             Objective = challengeCreateDto.Objective,
+            BadgeId = challengeCreateDto.BadgeId,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
@@ -32,7 +33,9 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
         StartDate = challengeUpdateDto.StartDate;
         EndDate = challengeUpdateDto.EndDate;
         IsGlobal = challengeUpdateDto.IsGlobal;
+        BadgeId = challengeUpdateDto.BadgeId;
         Objective = challengeUpdateDto.Objective;
+        UpdatedAt = DateTime.Now;
         return this;
     }
 
@@ -73,8 +76,8 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
     public DateTime CreatedAt { get; init; }
     
     [Column("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public DateTime UpdatedAt { get; set; }
     
     [ForeignKey("BadgeId")]
-    public Badge Badge { get; set; } = null!;
+    public Badge Badge { get; init; } = null!;
 }

@@ -17,8 +17,8 @@ public class BadgesToUser
     public DateTime ObtainedAt { get; init; }
     
     [ForeignKey(nameof(UserId))]
-    public User User { get; set; } = null!;
+    public User User { get; init; } = null!;
     
     [ForeignKey(nameof(BadgeId))]
-    public Badge Badge { get; set; } = null!;
+    public Badge Badge { get; init; } = null!;
 }

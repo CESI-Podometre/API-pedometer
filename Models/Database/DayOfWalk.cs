@@ -43,5 +43,5 @@ public class DayOfWalk : IBaseModel<DayOfWalk, DayOfWalkCreateDto, DayOfWalkUpda
     public Guid UserId { get; set; }
 
     [ForeignKey(nameof(UserId))]
-    public User User { get; set; } = null!;
+    public User User { get; init; } = null!;
 }
