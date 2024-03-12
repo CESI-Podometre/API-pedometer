@@ -4,4 +4,8 @@ using StarFitApi.Services.BaseServices;
 
 namespace StarFitApi.Services.UserServices;
 
-public interface IUserService : IBaseService<User, UserCreateDto, UserUpdateDto> { }
+public interface IUserService : IBaseService<User, UserCreateDto, UserUpdateDto>
+{
+    public Task<User?> GetByIdentifier(string identifier);
+
+}

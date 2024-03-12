@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using StarFitApi.Models.Dto.User;
 
 namespace StarFitApi.Models.Database;
 
 [Table("Users")]
-[Index(nameof(Email), IsUnique = true)]
+[Index(nameof(Identifier), IsUnique = true)]
 public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
 {
     public User() {}
@@ -15,9 +16,7 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     {
         return new User
         {
-            FirstName = userCreateDto.FirstName,
-            LastName = userCreateDto.LastName,
-            Email = userCreateDto.Email,
+            Identifier = userCreateDto.Identifier,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
@@ -25,9 +24,7 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     
     public User Update(UserUpdateDto userUpdateDto)
     {
-        FirstName = userUpdateDto.FirstName;
-        LastName = userUpdateDto.LastName;
-        Email = userUpdateDto.Email;
+        Identifier = userUpdateDto.Identifier;
         UpdatedAt = DateTime.Now;
         return this;
     }
@@ -41,17 +38,9 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
     
-    [Column("first_name")]
+    [Column("identifier")]
     [MaxLength(50)]
-    public string FirstName { get; set; } = null!;
-    
-    [Column("last_name")]
-    [MaxLength(50)]
-    public string LastName { get; set; } = null!;
-    
-    [Column("email")]
-    [MaxLength(100)]
-    public string Email { get; set; } = null!;
+    public string Identifier { get; set; } = null!;
     
     [Column("created_at")]
     public DateTime CreatedAt { get; init; }
@@ -59,9 +48,37 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
     
+    [JsonIgnore]
     public IEnumerable<BadgesToUser> BadgesToUsers { get; set; } = null!;
-    
-    public IEnumerable<Badge> Badges { get; set; } = null!;
-    
+
+    [NotMapped]
+    public IEnumerable<Badge> Badges
+    {
+        get { return BadgesToUsers.Select(btu => btu.Badge); }
+    }
     public IEnumerable<DayOfWalk> DaysOfWalk { get; set; } = null!;
+
+    public void FixDaysOfWalk()
+    {
+        DaysOfWalk = DaysOfWalk.OrderBy(dow => dow.Date).ToList();
+        FillDaysOfWalk(DaysOfWalk.Last().Date);
+    }
+    
+    private void FillDaysOfWalk(DateTime lastDay, int index = 0)
+    {
+        var dayOfWalk = DaysOfWalk.ElementAt(index);
+        if (dayOfWalk.Date.Date == lastDay.Date) return;
+        var nextDayOfWalk = DaysOfWalk.ElementAt(index + 1);
+        if (dayOfWalk.Date.AddDays(1).Date != nextDayOfWalk.Date.Date)
+        {
+            DaysOfWalk = DaysOfWalk.Take(index + 1)
+                .Concat(new List<DayOfWalk> {new DayOfWalk {Date = dayOfWalk.Date.AddDays(1), UserId = dayOfWalk.UserId, Steps = 0}})
+                .Concat(DaysOfWalk.Skip(index + 1))
+                .ToList();
+            FillDaysOfWalk(lastDay, index + 1);
+        }
+        else FillDaysOfWalk(lastDay, index + 1);
+    }
+    
+    
 }

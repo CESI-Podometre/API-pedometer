@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Models;
@@ -51,6 +52,8 @@ public class ControllerBaseExtended<T, TCreateDto, TUpdateDto, TService> : Contr
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
+            Debug.WriteLine(e.Message);
             return StatusCode(500, "Internal Server Error");
         }
     }

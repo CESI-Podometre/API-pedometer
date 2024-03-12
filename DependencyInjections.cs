@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Options;
 using StarFitApi.Config.Swagger;
-using StarFitApi.Models.Database;
 using StarFitApi.Services.ArticleServices;
 using StarFitApi.Services.BadgeServices;
 using StarFitApi.Services.ChallengeServices;

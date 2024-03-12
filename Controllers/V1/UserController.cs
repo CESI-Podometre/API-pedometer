@@ -29,5 +29,11 @@ public class UserController : ControllerBaseExtended<User, UserCreateDto, UserUp
 
     #region Methods
 
+    [HttpGet("identifier/{identifier}")]
+    public async Task<IActionResult> GetByIdentifier(string identifier)
+    {
+        return await TryExecuteControllerTask(async () => await _userService.GetByIdentifier(identifier));
+    }
+    
     #endregion
 }
