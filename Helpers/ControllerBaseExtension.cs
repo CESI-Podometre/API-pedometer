@@ -66,19 +66,19 @@ public class ControllerBaseExtended<T, TCreateDto, TUpdateDto, TService> : Contr
     #region Methods
     
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public virtual  async Task<IActionResult> GetAll()
     {
         return await TryExecuteControllerTask(async () => await _service.GetAll());
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public virtual async Task<IActionResult> GetById(Guid id)
     {
         return await TryExecuteControllerTask(async () => await _service.GetById(id));
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create(TCreateDto createDto)
+    public virtual  async Task<IActionResult> Create(TCreateDto createDto)
     {
         return await TryExecuteControllerTask(async () =>
         {
@@ -88,7 +88,7 @@ public class ControllerBaseExtended<T, TCreateDto, TUpdateDto, TService> : Contr
     }
     
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, TUpdateDto updateDto)
+    public virtual  async Task<IActionResult> Update(Guid id, TUpdateDto updateDto)
     {
         return await TryExecuteControllerTask(async () =>
         {
@@ -98,7 +98,7 @@ public class ControllerBaseExtended<T, TCreateDto, TUpdateDto, TService> : Contr
     }
     
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteDayOfWalk(Guid id)
+    public virtual async Task<IActionResult> Delete(Guid id)
     {
         return await TryExecuteControllerTask(async () => await _service.Delete(id));
     }

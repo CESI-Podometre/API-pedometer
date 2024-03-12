@@ -28,6 +28,7 @@ nupkg/
 
 uploads/*
 uploads
+./files
 
 .env
 
@@ -51,3 +52,4 @@ msbuild.err
 msbuild.wrn
 /database/
 /appsettings.Production.json
+/files/
