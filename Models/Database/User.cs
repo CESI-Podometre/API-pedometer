@@ -47,33 +47,37 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
 
-    public IEnumerable<BadgesToUser>? BadgesToUsers { get; set; }
+    public IEnumerable<BadgesToUser> BadgesToUsers { get; set; } = new List<BadgesToUser>();
 
-    public IEnumerable<Badge>? Badges { get; set; }
+    public IEnumerable<Badge> Badges { get; set; } = new List<Badge>();
 
     public IEnumerable<DayOfWalk>? DaysOfWalk { get; set; }
 
-    public void FixDaysOfWalk()
+    public void FixDaysOfWalk(DateTime? firstDay = null, DateTime? lastDay = null)
     {
-        DaysOfWalk ??= new List<DayOfWalk> { new DayOfWalk { Date = DateTime.Now, UserId = Id, Steps = 0 } };
+        DaysOfWalk ??= new List<DayOfWalk> { new() { Date = DateTime.Now, UserId = Id, Steps = 0 } };
         DaysOfWalk = DaysOfWalk.OrderBy(dow => dow.Date).ToList();
-        FillDaysOfWalk(DaysOfWalk.Last().Date);
+        if (firstDay != null && DaysOfWalk!.First().Date.Date != ((DateTime)firstDay).Date)
+        {
+            DaysOfWalk = new List<DayOfWalk> {new() {Date = (DateTime)firstDay, UserId = Id, Steps = 0}}
+                .Concat(DaysOfWalk!)
+                .ToList();
+        }
+        FillDaysOfWalk(lastDay ?? DaysOfWalk.Last().Date);
     }
     
     private void FillDaysOfWalk(DateTime lastDay, int index = 0)
     {
         var dayOfWalk = DaysOfWalk!.ElementAt(index);
-        if (dayOfWalk.Date.Date == lastDay.Date) return;
         var nextDayOfWalk = DaysOfWalk!.ElementAt(index + 1);
         if (dayOfWalk.Date.AddDays(1).Date != nextDayOfWalk.Date.Date)
         {
             DaysOfWalk = DaysOfWalk!.Take(index + 1)
-                .Concat(new List<DayOfWalk> {new DayOfWalk {Date = dayOfWalk.Date.AddDays(1), UserId = dayOfWalk.UserId, Steps = 0}})
+                .Concat(new List<DayOfWalk> {new() {Date = dayOfWalk.Date.AddDays(1), UserId = dayOfWalk.UserId, Steps = 0}})
                 .Concat(DaysOfWalk!.Skip(index + 1))
                 .ToList();
-            FillDaysOfWalk(lastDay, index + 1);
         }
-        else FillDaysOfWalk(lastDay, index + 1);
+        if (nextDayOfWalk.Date.Date != lastDay.Date) FillDaysOfWalk(lastDay, index + 1);
     }
     
     

@@ -26,6 +26,7 @@ nupkg/
 *.userosscache
 *.sln.docstates
 
+appsettings.json
 uploads/*
 uploads
 ./files

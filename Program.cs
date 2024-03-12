@@ -1,15 +1,22 @@
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using StarFitApi;
 using StarFitApi.Config.Swagger;
 using StarFitApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var issuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>() ?? throw new Exception("Jwt:Issuer not found in appsettings.json");
+var audience = builder.Configuration.GetSection("Jwt:Audience").Get<string>() ?? throw new Exception("Jwt:Audience not found in appsettings.json");
+var key = builder.Configuration.GetSection("Jwt:Key").Get<string>() ?? throw new Exception("Jwt:Key not found in appsettings.json");
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -32,11 +39,72 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.OperationFilter<SwaggerDefaultValues>();
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("user", policy =>
+    {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim(ClaimTypes.Role, "user");
+    });
+    options.AddPolicy("admin", policy =>
+    {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+        // authorized for admin and superAdmin
+        policy.RequireClaim(ClaimTypes.Role, "admin", "superAdmin");
+    });
+    options.AddPolicy("superAdmin", policy =>
+    {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim(ClaimTypes.Role, "superAdmin");
+    });
+});
 
 builder.Services
     .AddApiVersioning(options =>
@@ -68,6 +136,7 @@ app.UseSwaggerUI(options =>
     }
 });
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

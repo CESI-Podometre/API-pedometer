@@ -93,6 +93,20 @@ public class DataSeeder
         }
         _modelBuilder.Entity<Article>().HasData(_articles);
     }
+
+    private void GenerateSuperUser()
+    {
+        var password = BCrypt.Net.BCrypt.HashPassword("superAdmin", 5);
+        var superUser = new SuperUser
+        {
+            Username = "superAdmin",
+            Password = password,
+            SuperRole = "superAdmin",
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
+        };
+        _modelBuilder.Entity<SuperUser>().HasData(superUser);
+    }
     
     private void GenerateBadges()
     {
@@ -159,6 +173,7 @@ public class DataSeeder
         GenerateArticles();
         GenerateDaysOfWalk();
         GenerateBadgesToUser();
+        GenerateSuperUser();
     }
     
     #endregion

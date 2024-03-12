@@ -26,7 +26,7 @@ public class FilesController : ControllerBase
     #region Methods
 
     [HttpGet]
-    public async Task<IActionResult> GetDocumentFile(string fileName)
+    public IActionResult GetDocumentFile(string fileName)
     {
         var filePath = _fileService.GetDocumentByLink(fileName);
         var fullPath = Path.Combine(Directory.GetCurrentDirectory(), filePath);

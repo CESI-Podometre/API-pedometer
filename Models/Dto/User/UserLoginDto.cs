@@ -2,10 +2,10 @@ using FluentValidation;
 
 namespace StarFitApi.Models.Dto.User;
 
-public class UserCreateDto : IDataTransferObject
+public class UserLoginDto : IDataTransferObject
 {
     public string Identifier { get; set; } = null!;
-    
+
     private class Validator:AbstractValidator<UserCreateDto>
     {
         public Validator()

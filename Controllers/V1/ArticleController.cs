@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
 using StarFitApi.Models.Database;
@@ -33,6 +34,7 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
     #region Methods
     
     [HttpPost]
+    [Authorize("admin")]
     public override async Task<IActionResult> Create([FromForm] ArticleCreateDto createDto)
     {
         return await TryExecuteControllerTask(async () =>
@@ -46,6 +48,7 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
     }
     
     [HttpPut]
+    [Authorize("admin")]
     public override async Task<IActionResult> Update(Guid id, [FromForm] ArticleUpdateDto updateDto)
     {
         return await TryExecuteControllerTask(async () =>
@@ -61,6 +64,7 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
     }
     
     [HttpDelete]
+    [Authorize("admin")]
     public override async Task<IActionResult> Delete(Guid id)
     {
         return await TryExecuteControllerTask(async () =>

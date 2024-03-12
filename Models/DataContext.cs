@@ -21,6 +21,7 @@ public class DataContext : DbContext
     }
     
     public required DbSet<User> Users { get; set; }
+    public required DbSet<SuperUser> SuperUsers { get; set; }
     public required DbSet<DayOfWalk> DaysOfWalk { get; set; }
     public required DbSet<Article> Articles { get; set; }
     

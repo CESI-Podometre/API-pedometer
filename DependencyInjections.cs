@@ -5,6 +5,7 @@ using StarFitApi.Services.BadgeServices;
 using StarFitApi.Services.ChallengeServices;
 using StarFitApi.Services.DayOfWalkServices;
 using StarFitApi.Services.FileServices;
+using StarFitApi.Services.SuperUserServices;
 using StarFitApi.Services.UserServices;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -18,6 +19,7 @@ public static class DependencyInjections
         services.AddScoped<IFileService, FileService>();
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ISuperUserService, SuperUserService>();
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IChallengeService, ChallengeService>();
         services.AddScoped<IDayOfWalkService, DayOfWalkService>();

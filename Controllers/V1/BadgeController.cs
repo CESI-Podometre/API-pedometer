@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
 using StarFitApi.Models;
@@ -36,6 +37,7 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
     #region Methods
     
     [HttpPost]
+    [Authorize("admin")]
     public override async Task<IActionResult> Create([FromForm] BadgeCreateDto createDto)
     {
         return await TryExecuteControllerTask(async () =>
@@ -49,6 +51,7 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
     }
     
     [HttpPut]
+    [Authorize("admin")]
     public override async Task<IActionResult> Update(Guid id, [FromForm] BadgeUpdateDto updateDto)
     {
         return await TryExecuteControllerTask(async () =>
@@ -64,6 +67,7 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
     }
     
     [HttpDelete]
+    [Authorize("admin")]
     public override async Task<IActionResult> Delete(Guid id)
     {
         return await TryExecuteControllerTask(async () =>

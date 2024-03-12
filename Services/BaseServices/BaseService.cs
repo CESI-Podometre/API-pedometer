@@ -17,7 +17,7 @@ public class BaseService<T, TCreateDto, TUpdateDto> : IBaseService<T, TCreateDto
         _context = context;
     }
 
-    public async Task<T> Create(TCreateDto createDto)
+    public virtual async Task<T> Create(TCreateDto createDto)
     {
         var entity = T.Create(createDto);
         await T.GetDbSet(_context).AddAsync(entity);
@@ -25,7 +25,7 @@ public class BaseService<T, TCreateDto, TUpdateDto> : IBaseService<T, TCreateDto
         return entity;
     }
 
-    public async Task<T> Update(Guid id, TUpdateDto updateDto)
+    public virtual async Task<T> Update(Guid id, TUpdateDto updateDto)
     {
         var entity = await T.GetDbSet(_context).FindAsync(id);
         if (entity == null)
@@ -37,7 +37,7 @@ public class BaseService<T, TCreateDto, TUpdateDto> : IBaseService<T, TCreateDto
         return entity;
     }
 
-    public async Task<T> Delete(Guid id)
+    public virtual async Task<T> Delete(Guid id)
     {
         var entity = await T.GetDbSet(_context).FindAsync(id);
         if (entity == null) throw new NotFoundException("Entity not found");
@@ -46,14 +46,14 @@ public class BaseService<T, TCreateDto, TUpdateDto> : IBaseService<T, TCreateDto
         return entity;
     }
 
-    public async Task<T> GetById(Guid id)
+    public virtual async Task<T> GetById(Guid id)
     {
         var entity = await T.GetDbSet(_context).FindAsync(id);
         if (entity == null) throw new NotFoundException("Entity not found");
         return entity;
     }
 
-    public async Task<IEnumerable<T>> GetAll()
+    public virtual async Task<IEnumerable<T>> GetAll()
     {
         return await T.GetDbSet(_context).ToListAsync();
     }
