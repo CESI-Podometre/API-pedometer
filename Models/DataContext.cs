@@ -12,13 +12,20 @@ public class DataContext : DbContext
 
     #endregion
 
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     base.OnModelCreating(modelBuilder);
-    //
-    //     var dataSeeder = new DataSeeder(modelBuilder);
-    //     dataSeeder.Seed();
-    // }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    
+        var dataSeeder = new DataSeeder(modelBuilder);
+        dataSeeder.Seed();
+        // modelBuilder.Entity<BadgesToUser>();
+        // modelBuilder.Entity<Badge>();
+        // modelBuilder.Entity<Challenge>();
+        // modelBuilder.Entity<Article>();
+        // modelBuilder.Entity<DayOfWalk>();
+        // modelBuilder.Entity<SuperUser>();
+        // modelBuilder.Entity<User>();
+    }
     
     public required DbSet<User> Users { get; set; }
     public required DbSet<SuperUser> SuperUsers { get; set; }
