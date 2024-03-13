@@ -81,7 +81,7 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
             ))
             .FirstOrDefaultAsync(u => u.Identifier == identifier);
         if (user == null) throw new NotFoundException("User not found");
-        user.FixDaysOfWalk();
+        user.FixDaysOfWalk(startDate, endDate);
         return user;
     }
 
