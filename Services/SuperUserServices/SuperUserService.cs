@@ -51,6 +51,7 @@ public class SuperUserService : BaseService<SuperUser, SuperUserCreateDto, Super
         
         var claims = new[]
         {
+            new Claim("id", superUser.Id.ToString()),
             new Claim("name", superUser.Username),
             new Claim("role", superUser.SuperRole)
         };

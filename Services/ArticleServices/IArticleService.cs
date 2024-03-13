@@ -5,4 +5,7 @@ using StarFitApi.Services.BaseServices;
 
 namespace StarFitApi.Services.ArticleServices;
 
-public interface IArticleService : IBaseService<Article, ArticleCreateDto, ArticleUpdateDto> { }
+public interface IArticleService : IBaseService<Article, ArticleCreateDto, ArticleUpdateDto>
+{
+    public Task<IEnumerable<Article>> GetUserContent();
+}

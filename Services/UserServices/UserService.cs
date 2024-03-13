@@ -41,6 +41,15 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
             .ThenInclude(btu => btu.Badge)
             .FirstOrDefaultAsync(u => u.Identifier == identifier);
     }
+    
+    public async Task<User?> Me(string identifier)
+    {
+        return await _context.Users
+            .Include(u => u.DaysOfWalk)
+            .Include(u => u.BadgesToUsers)
+            .ThenInclude(btu => btu.Badge)
+            .FirstOrDefaultAsync(u => u.Identifier == identifier);
+    }
 
     public async Task<TokenResponse?> Login(UserLoginDto userLoginDto)
     {
@@ -52,6 +61,7 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
 
         var claims = new[]
         {
+            new Claim("identifier", user.Identifier),
             new Claim("name", user.Identifier),
             new Claim("role", "user")
         };

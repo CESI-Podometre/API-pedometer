@@ -37,6 +37,17 @@ public class UserController : ControllerBaseExtended<User, UserCreateDto, UserUp
         return await TryExecuteControllerTask(async () => await _userService.GetByIdentifier(identifier));
     }
     
+    [HttpGet("me")]
+    [Authorize("user")]
+    public async Task<IActionResult> Me()
+    {
+        return await TryExecuteControllerTask(async () =>
+        {
+            var identifier = User.Claims.FirstOrDefault(c => c.Type == "identifier")?.Value;
+            return await _userService.Me(identifier!);
+        });
+    }
+    
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLoginDto userLoginDto)
     {

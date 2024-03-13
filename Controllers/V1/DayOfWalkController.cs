@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
 using StarFitApi.Models.Database;
@@ -28,6 +29,17 @@ public class DayOfWalkController : ControllerBaseExtended<DayOfWalk, DayOfWalkCr
     #endregion
     
     #region Methods
+    
+    [HttpPost("user-create-or-update")]
+    [Authorize("user")]
+    public async Task<IActionResult> UserCreateOrUpdate(DayOfWalkUserCreateOrUpdateDto dayOfWalkUserCreateOrUpdateDto)
+    {
+        return await TryExecuteControllerTask(async () =>
+        {
+            var id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "identifier")?.Value!);
+            return await _dayOfWalkService.UserCreateOrUpdate(id, dayOfWalkUserCreateOrUpdateDto);
+        });
+    }
     
     #endregion
 }

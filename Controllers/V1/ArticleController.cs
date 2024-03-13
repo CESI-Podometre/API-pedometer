@@ -33,6 +33,13 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
     
     #region Methods
     
+    [Authorize("user")]
+    [HttpGet("user-content")]
+    public async Task<IActionResult> GetUserContent()
+    {
+        return await TryExecuteControllerTask(async () => await _articleService.GetUserContent());
+    }
+    
     [HttpPost]
     [Authorize("admin")]
     public override async Task<IActionResult> Create([FromForm] ArticleCreateDto createDto)

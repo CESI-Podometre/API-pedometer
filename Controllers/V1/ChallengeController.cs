@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
 using StarFitApi.Models.Database;
@@ -29,6 +30,16 @@ public class ChallengeController : ControllerBaseExtended<Challenge, ChallengeCr
     
     #region Methods
     
+    [HttpGet("user-content")]
+    [Authorize("user")]
+    public async Task<IActionResult> GetUserContent()
+    {
+        return await TryExecuteControllerTask(async () =>
+        {
+            var id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "identifier")?.Value!);
+            return await _challengeService.GetUserContent(id);
+        });
+    }
     
     #endregion
 }

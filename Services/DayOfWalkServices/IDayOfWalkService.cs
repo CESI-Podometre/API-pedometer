@@ -4,4 +4,8 @@ using StarFitApi.Services.BaseServices;
 
 namespace StarFitApi.Services.DayOfWalkServices;
 
-public interface IDayOfWalkService : IBaseService<DayOfWalk, DayOfWalkCreateDto, DayOfWalkUpdateDto> { }
+public interface IDayOfWalkService : IBaseService<DayOfWalk, DayOfWalkCreateDto, DayOfWalkUpdateDto>
+{
+    public Task<DayOfWalk> UserCreateOrUpdate(Guid id, DayOfWalkUserCreateOrUpdateDto dayOfWalkUserCreateOrUpdateDto);
+
+}

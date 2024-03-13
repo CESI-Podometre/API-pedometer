@@ -1,5 +1,6 @@
 
 
+using Microsoft.EntityFrameworkCore;
 using StarFitApi.Models;
 using StarFitApi.Models.Database;
 using StarFitApi.Models.Dto.DayOfWalk;
@@ -26,7 +27,27 @@ public class DayOfWalkService : BaseService<DayOfWalk, DayOfWalkCreateDto, DayOf
 
     #region Methods
 
-    
+    public async Task<DayOfWalk> UserCreateOrUpdate(Guid id, DayOfWalkUserCreateOrUpdateDto dayOfWalkUserCreateOrUpdateDto)
+    {
+        var dayOfWalk = await _context.DaysOfWalk
+            .FirstOrDefaultAsync(dow => dow.UserId == id && dow.Date == dayOfWalkUserCreateOrUpdateDto.Date);
+        if (dayOfWalk == null)
+        {
+            dayOfWalk = new DayOfWalk
+            {
+                UserId = id,
+                Date = dayOfWalkUserCreateOrUpdateDto.Date,
+                Steps = dayOfWalkUserCreateOrUpdateDto.Steps
+            };
+            await _context.DaysOfWalk.AddAsync(dayOfWalk);
+        }
+        else
+        {
+            dayOfWalk.Steps = dayOfWalkUserCreateOrUpdateDto.Steps;
+        }
+        await _context.SaveChangesAsync();
+        return dayOfWalk;
+    }
 
     #endregion
 }

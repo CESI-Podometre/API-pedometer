@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using StarFitApi.Models.Dto.Challenge;
 
@@ -80,4 +81,7 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
     
     [ForeignKey("BadgeId")]
     public Badge Badge { get; init; } = null!;
+    
+    [NotMapped]
+    public float? Progression { get; set; }
 }

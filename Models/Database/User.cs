@@ -46,6 +46,9 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
+    
+    [NotMapped]
+    public int TotalSteps => DaysOfWalk?.Sum(dow => dow.Steps) ?? 0;
 
     public IEnumerable<BadgesToUser> BadgesToUsers { get; set; } = new List<BadgesToUser>();
 
