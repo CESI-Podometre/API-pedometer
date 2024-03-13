@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
@@ -8,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StarFitApi;
 using StarFitApi.Config.Swagger;
+using StarFitApi.Helpers;
 using StarFitApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +24,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddCors(options =>
-    options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+    options.AddPolicy("AllowSpecificOrigin",
+        policyBuilder => policyBuilder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+        )
+    );
 
 // Add DbContext
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -123,6 +128,8 @@ builder.Services
     });
 
 var app = builder.Build();
+
+app.UseMiddleware<OptionsFixerMiddleware>();
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())

@@ -1,6 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 3000
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -31,4 +30,4 @@ COPY Docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
-CMD ["dotnet", "StarFitApi.dll", "--urls", "http://*:3000"]
+CMD ["dotnet", "StarFitApi.dll"]
