@@ -129,7 +129,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseMiddleware<OptionsFixerMiddleware>();
+// app.UseMiddleware<OptionsFixerMiddleware>();
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())

@@ -32,7 +32,7 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
     #endregion
 
     #region Methods
-
+    
     public async Task<User?> GetByIdentifier(string identifier)
     {
         return await _context.Users
