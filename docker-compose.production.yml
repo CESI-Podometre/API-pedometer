@@ -3,10 +3,12 @@ version: '3.8'
 services:
   starfit-webapi:
     image: ghcr.io/cesi-podometre/api-pedometer/webapi:latest
-    ports:
-      - "80:80"
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.express-http.rule=Host(`www.storymakerapi.fr`)"
+      - "traefik.http.routers.express-http.entrypoints=websecure"
+      - "traefik.http.routers.express-http.tls.certresolver=myresolver"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=User ID =postgres;Password=${POSTGRES_PASSWORD};Server=starfit-db;Port=5432;Database=starfit; Integrated Security=true;Pooling=true;
@@ -16,7 +18,8 @@ services:
     depends_on:
       - starfit-db
     networks:
-      - starfit-db-network
+      - frontend
+      - backend
   
   migrations:
     image: ghcr.io/cesi-podometre/api-pedometer/migrations:latest
@@ -30,7 +33,7 @@ services:
     depends_on:
       - starfit-webapi
     networks:
-      - starfit-db-network
+      - backend 
   
   starfit-db:
     image: "postgres:16"
@@ -44,8 +47,13 @@ services:
     volumes:
       - ./database/:/var/lib/postgresql/data
     networks:
-      - starfit-db-network
+      - backend
 
 networks:
-  starfit-db-network:
-    driver: bridge
+  frontend:
+    external: true
+    name: custom_frontend
+
+  backend:
+    external: true
+    name: custom_backend
