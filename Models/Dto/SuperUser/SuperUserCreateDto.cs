@@ -15,4 +15,10 @@ public class SuperUserCreateDto : IDataTransferObject
             RuleFor(s => s.Password).NotEmpty().MaximumLength(50);
         }
     }
+    
+    public async Task Validate()
+    {
+        var validator = new Validator();
+        await validator.ValidateAndThrowAsync(this);
+    }
 }

@@ -52,8 +52,8 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, user.Identifier),
-            new Claim(ClaimTypes.Role, "user")
+            new Claim("name", user.Identifier),
+            new Claim("role", "user")
         };
 
         var token = new JwtSecurityToken(

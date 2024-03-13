@@ -13,4 +13,10 @@ public class UserUpdateDto : IDataTransferObject
             RuleFor(x => x.Identifier).NotEmpty().MaximumLength(50);
         }
     }
+    
+    public async Task Validate()
+    {
+        var validator = new Validator();
+        await validator.ValidateAndThrowAsync(this);
+    }
 }

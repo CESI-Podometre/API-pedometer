@@ -92,20 +92,20 @@ builder.Services.AddAuthorization(options =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim(ClaimTypes.Role, "user");
+        policy.RequireClaim("role", "user");
     });
     options.AddPolicy("admin", policy =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
         // authorized for admin and superAdmin
-        policy.RequireClaim(ClaimTypes.Role, "admin", "superAdmin");
+        policy.RequireClaim("role", "admin", "superAdmin");
     });
     options.AddPolicy("superAdmin", policy =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim(ClaimTypes.Role, "superAdmin");
+        policy.RequireClaim("role", "superAdmin");
     });
 });
 

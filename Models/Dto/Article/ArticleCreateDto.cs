@@ -24,4 +24,10 @@ public class ArticleCreateDto : IDataTransferObject
             RuleFor(x => x.EndDate).NotEmpty();
         }
     }
+    
+    public async Task Validate()
+    {
+        var validator = new Validator();
+        await validator.ValidateAndThrowAsync(this);
+    }
 }

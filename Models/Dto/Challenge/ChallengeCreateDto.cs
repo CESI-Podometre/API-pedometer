@@ -23,4 +23,10 @@ public class ChallengeCreateDto : IDataTransferObject
             RuleFor(x => x.BadgeId).NotEmpty();
         }
     }
+    
+    public async Task Validate()
+    {
+        var validator = new Validator();
+        await validator.ValidateAndThrowAsync(this);
+    }
 }

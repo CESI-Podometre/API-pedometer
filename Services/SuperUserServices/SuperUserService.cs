@@ -51,8 +51,8 @@ public class SuperUserService : BaseService<SuperUser, SuperUserCreateDto, Super
         
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, superUser.Username),
-            new Claim(ClaimTypes.Role, superUser.SuperRole)
+            new Claim("name", superUser.Username),
+            new Claim("role", superUser.SuperRole)
         };
         
         var token = new JwtSecurityToken(

@@ -13,4 +13,10 @@ public class SuperUserUpdateDto : IDataTransferObject
             RuleFor(s => s.Username).NotEmpty().MaximumLength(50);
         }
     }
+    
+    public async Task Validate()
+    {
+        var validator = new Validator();
+        await validator.ValidateAndThrowAsync(this);
+    }
 }
