@@ -65,7 +65,7 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
         });
     }
     
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [Authorize("admin")]
     public override async Task<IActionResult> Delete(Guid id)
     {

@@ -79,7 +79,7 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
         return await TryExecuteControllerTask(async () => await _articleService.UpdatePublishState(id, state));
     }
     
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [Authorize("admin")]
     public override async Task<IActionResult> Delete(Guid id)
     {

@@ -73,7 +73,7 @@ public class ChallengeController : ControllerBaseExtended<Challenge, ChallengeCr
         });
     }
     
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [Authorize("admin")]
     public override async Task<IActionResult> Delete(Guid id)
     {

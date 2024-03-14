@@ -51,7 +51,7 @@ public class SuperUserController : ControllerBaseExtended<SuperUser, SuperUserCr
         });
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     [Authorize("superAdmin")]
     public override Task<IActionResult> GetById(Guid id) => base.GetById(id);
     
@@ -63,11 +63,11 @@ public class SuperUserController : ControllerBaseExtended<SuperUser, SuperUserCr
     [Authorize("superAdmin")]
     public override Task<IActionResult> Create(SuperUserCreateDto createDto) => base.Create(createDto);
     
-    [HttpPut]
+    [HttpPut("{id:guid}")]
     [Authorize("superAdmin")]
     public override Task<IActionResult> Update(Guid id, SuperUserUpdateDto updateDto) => base.Update(id, updateDto);
     
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [Authorize("superAdmin")]
     public override Task<IActionResult> Delete(Guid id) => base.Delete(id);
 
