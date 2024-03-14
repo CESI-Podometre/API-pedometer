@@ -24,7 +24,6 @@ public class ArticleCreateDto : IDataTransferObject
             RuleFor(x => x.ImagePath).NotEmpty();
             RuleFor(x => x.FilePath).NotEmpty();
             RuleFor(x => x.StartDate).NotEmpty();
-            RuleFor(x => x.EndDate).NotEmpty();
         }
     }
     
