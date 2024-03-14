@@ -7,7 +7,9 @@ using StarFitApi.Services.DayOfWalkServices;
 using StarFitApi.Services.FileServices;
 using StarFitApi.Services.SuperUserServices;
 using StarFitApi.Services.UserServices;
+using StarFitApi.Services.VariablesServices;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using ArticleService = StarFitApi.Services.ArticleServices.ArticleService;
 
 namespace StarFitApi;
 
@@ -17,6 +19,7 @@ public static class DependencyInjections
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IVariablesService, VariablesService>();
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ISuperUserService, SuperUserService>();

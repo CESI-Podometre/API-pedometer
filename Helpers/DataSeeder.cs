@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using StarFitApi.Models;
 using StarFitApi.Models.Database;
 
 namespace StarFitApi.Helpers;
@@ -66,15 +65,18 @@ public class DataSeeder
     
     private void GenerateDaysOfWalk()
     {
-        for (var i = 0; i < 100; i++)
+        foreach (var user in _users)
         {
-            var dayOfWalk = new DayOfWalk
+            for (var i = 0; i < 50; i++)
             {
-                UserId = _users[i % 10].Id,
-                Date = DateTime.Now.AddDays(-100 + i),
-                Steps = 1000
-            };
-            _daysOfWalk.Add(dayOfWalk);
+                var dayOfWalk = new DayOfWalk
+                {
+                    UserId = user.Id,
+                    Date = DateTime.Now.AddDays(-50 + i),
+                    Steps = new Random().Next(1000, 100000),
+                };
+                _daysOfWalk.Add(dayOfWalk);
+            }
         }
         _modelBuilder.Entity<DayOfWalk>().HasData(_daysOfWalk);
     }
@@ -91,7 +93,7 @@ public class DataSeeder
                 Description = $"Content {i}",
                 IllustrationPath = _articleImages[i % 3],
                 FilePath = _articlePdfs[i % 3],
-                StartDate = DateTime.Now,
+                StartDate = DateTime.Now.AddDays(new Random().Next(-20, 0)),
                 Published = true,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
@@ -133,6 +135,15 @@ public class DataSeeder
         }
         _modelBuilder.Entity<Badge>().HasData(_badges);
     }
+
+    private void GenerateVariables()
+    {
+        var variables = new Variables()
+        {
+            ConversionStepMoney = "1000"
+        };
+        _modelBuilder.Entity<Variables>().HasData(variables);
+    }
     
     private void GenerateChallenges()
     {
@@ -144,10 +155,11 @@ public class DataSeeder
                 Id = guid,
                 Title = $"Challenge {i}",
                 Description = $"Content {i}",
+                IllustrationPath = _articleImages[i % 3],
                 BadgeId = _badges[i % 10].Id,
                 IsGlobal = i % 2 == 0,
                 Objective = new Random().Next(1000, 100000),
-                StartDate = DateTime.Now,
+                StartDate = DateTime.Now.AddDays(new Random().Next(-20, 0)),
                 EndDate = DateTime.Now.AddDays(30),
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
@@ -181,6 +193,7 @@ public class DataSeeder
         GenerateDaysOfWalk();
         GenerateBadgesToUser();
         GenerateSuperUser();
+        GenerateVariables();
     }
     
     #endregion

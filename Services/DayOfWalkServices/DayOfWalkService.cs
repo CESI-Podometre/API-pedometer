@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using StarFitApi.Models;
 using StarFitApi.Models.Database;
 using StarFitApi.Models.Dto.DayOfWalk;
+using StarFitApi.Models.Other;
 using StarFitApi.Services.BaseServices;
+using StarFitApi.Services.VariablesServices;
 
 namespace StarFitApi.Services.DayOfWalkServices;
 
@@ -13,14 +15,16 @@ public class DayOfWalkService : BaseService<DayOfWalk, DayOfWalkCreateDto, DayOf
     #region MyRegion
 
     private readonly DataContext _context;
+    private readonly IVariablesService _variablesService;
 
     #endregion
 
     #region MyRegion
 
-    public DayOfWalkService(DataContext context) : base(context)
+    public DayOfWalkService(DataContext context, IVariablesService variablesService) : base(context)
     {
         _context = context;
+        _variablesService = variablesService;
     }
     
     #endregion
@@ -44,6 +48,22 @@ public class DayOfWalkService : BaseService<DayOfWalk, DayOfWalkCreateDto, DayOf
         else dayOfWalk.Steps = dayOfWalkUserCreateOrUpdateDto.Steps;
         await _context.SaveChangesAsync();
         return dayOfWalk;
+    }
+    
+    public async Task<GlobalProgression> GetGlobalProgression()
+    {
+        var conversionStepMoney = int.Parse(await _variablesService.GetVariable("ConversionStepMoney"));
+        var daysOfWalk = await _context.DaysOfWalk.ToListAsync();
+        var totalSteps = daysOfWalk.Sum(dow => dow.Steps);
+        
+        var globalProgression = new GlobalProgression
+        {
+            TotalSteps = totalSteps,
+            TotalDays = daysOfWalk.DistinctBy(dow => dow.Date.Date).Count(),
+            TotalMoney = totalSteps / conversionStepMoney,
+            TotalKilometers = totalSteps * 65 / 100000,
+        };
+        return globalProgression;
     }
 
     #endregion

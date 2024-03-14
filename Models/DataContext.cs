@@ -28,4 +28,5 @@ public class DataContext : DbContext
     public required DbSet<Challenge> Challenges { get; set; }
     public required DbSet<Badge> Badges { get; set; }
     public required DbSet<BadgesToUser> BadgesToUser { get; set; }
+    public required DbSet<Variables> Variables { get; set; }
 }

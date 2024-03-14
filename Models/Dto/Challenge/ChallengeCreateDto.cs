@@ -6,6 +6,8 @@ public class ChallengeCreateDto : IDataTransferObject
 {
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;
+    public IFormFile Image { get; set; } = null!;
+    internal string ImagePath { get; set; } = null!;
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public bool IsGlobal { get; set; }
@@ -21,6 +23,7 @@ public class ChallengeCreateDto : IDataTransferObject
             RuleFor(x => x.StartDate).NotEmpty();
             RuleFor(x => x.Objective).NotEmpty();
             RuleFor(x => x.BadgeId).NotEmpty();
+            RuleFor(x => x.Image).NotEmpty();
         }
     }
     

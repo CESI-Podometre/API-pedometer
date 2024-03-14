@@ -6,6 +6,8 @@ public class ChallengeUpdateDto : IDataTransferObject
 {
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;
+    public IFormFile? Image { get; set; }
+    internal string? ImagePath { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public bool IsGlobal { get; set; }

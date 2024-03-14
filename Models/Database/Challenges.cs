@@ -17,6 +17,7 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
         {
             Title = challengeCreateDto.Title,
             Description = challengeCreateDto.Description,
+            IllustrationPath = challengeCreateDto.ImagePath,
             StartDate = challengeCreateDto.StartDate,
             EndDate = challengeCreateDto.EndDate,
             IsGlobal = challengeCreateDto.IsGlobal,
@@ -31,6 +32,8 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
     {
         Title = challengeUpdateDto.Title;
         Description = challengeUpdateDto.Description;
+        if (challengeUpdateDto.ImagePath != null) 
+            IllustrationPath = challengeUpdateDto.ImagePath;
         StartDate = challengeUpdateDto.StartDate;
         EndDate = challengeUpdateDto.EndDate;
         IsGlobal = challengeUpdateDto.IsGlobal;
@@ -60,6 +63,10 @@ public class Challenge : IBaseModel<Challenge, ChallengeCreateDto, ChallengeUpda
     [Column("description")]
     [MaxLength(255)]
     public string Description { get; set; } = null!;
+    
+    [Column("illustration_path")]
+    [MaxLength(255)]
+    public string IllustrationPath { get; set; } = null!;
     
     [Column("start_date")]
     public DateTime StartDate { get; set; }
