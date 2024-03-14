@@ -36,7 +36,7 @@ public class ChallengeController : ControllerBaseExtended<Challenge, ChallengeCr
     {
         return await TryExecuteControllerTask(async () =>
         {
-            var id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "identifier")?.Value!);
+            var id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? throw new Exception("User id not found"));
             return await _challengeService.GetUserContent(id);
         });
     }

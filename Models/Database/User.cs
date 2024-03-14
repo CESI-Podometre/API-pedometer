@@ -50,9 +50,9 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
     [NotMapped]
     public int TotalSteps => DaysOfWalk?.Sum(dow => dow.Steps) ?? 0;
 
-    public IEnumerable<BadgesToUser> BadgesToUsers { get; set; } = new List<BadgesToUser>();
+    public IEnumerable<BadgesToUser> BadgesToUsers { get; init; } = new List<BadgesToUser>();
 
-    public IEnumerable<Badge> Badges { get; set; } = new List<Badge>();
+    public IEnumerable<Badge> Badges { get; init; } = new List<Badge>();
 
     public IEnumerable<DayOfWalk>? DaysOfWalk { get; set; }
 

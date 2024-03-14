@@ -5,6 +5,7 @@ using StarFitApi.Models;
 using StarFitApi.Models.Database;
 using StarFitApi.Models.Dto.Article;
 using StarFitApi.Models.Dto.Badge;
+using StarFitApi.Models.Exception;
 using StarFitApi.Services.BadgeServices;
 using StarFitApi.Services.BaseServices;
 
@@ -34,8 +35,17 @@ public class ArticleService : BaseService<Article, ArticleCreateDto, ArticleUpda
         return await _context.Articles
             .Where(a => a.Published)
             .Where(a => a.StartDate <= DateTime.Now)
-            .Where(a => a.EndDate >= DateTime.Now)
+            .Where(a => a.EndDate == null || a.EndDate >= DateTime.Now)
             .ToListAsync();
+    }
+    
+    public async Task<Article?> UpdatePublishState(Guid id, bool state)
+    {
+        var article = await _context.Articles.FindAsync(id);
+        if (article == null) throw new NotFoundException("Article not found");
+        article.Published = state;
+        await _context.SaveChangesAsync();
+        return article;
     }
 
     #endregion

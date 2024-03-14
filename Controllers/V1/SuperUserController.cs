@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
 using StarFitApi.Models.Database;
 using StarFitApi.Models.Dto.SuperUser;
-using StarFitApi.Models.Dto.User;
 using StarFitApi.Services.SuperUserServices;
-using StarFitApi.Services.UserServices;
 
 namespace StarFitApi.Controllers.V1;
 
@@ -41,7 +39,22 @@ public class SuperUserController : ControllerBaseExtended<SuperUser, SuperUserCr
             return await _superUserService.Login(superUserLoginDto);
         });
     }
+    
+    [HttpGet("me")]
+    [Authorize("admin")]
+    public async Task<IActionResult> Me()
+    {
+        return await TryExecuteControllerTask(async () =>
+        {
+            var id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? throw new Exception("User id not found"));
+            return await _superUserService.GetById(id);
+        });
+    }
 
+    [HttpGet("{id}")]
+    [Authorize("superAdmin")]
+    public override Task<IActionResult> GetById(Guid id) => base.GetById(id);
+    
     [HttpGet]
     [Authorize("superAdmin")]
     public override Task<IActionResult> GetAll() => base.GetAll();

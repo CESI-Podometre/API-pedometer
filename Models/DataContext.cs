@@ -18,13 +18,6 @@ public class DataContext : DbContext
     
         var dataSeeder = new DataSeeder(modelBuilder);
         dataSeeder.Seed();
-        // modelBuilder.Entity<BadgesToUser>();
-        // modelBuilder.Entity<Badge>();
-        // modelBuilder.Entity<Challenge>();
-        // modelBuilder.Entity<Article>();
-        // modelBuilder.Entity<DayOfWalk>();
-        // modelBuilder.Entity<SuperUser>();
-        // modelBuilder.Entity<User>();
     }
     
     public required DbSet<User> Users { get; set; }

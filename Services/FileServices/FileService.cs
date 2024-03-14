@@ -9,7 +9,8 @@ public class FileService : IFileService
     // Add a document
     public async Task<string> AddDocument(IFormFile file)
     {
-        file = ReduceImageWeight(file);
+        if (file.ContentType.Contains("image")) file = ReduceImageWeight(file);
+        
         var uniqueFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "files" , uniqueFileName);
 
@@ -55,5 +56,17 @@ public class FileService : IFileService
         image.Save(memoryStream, new PngEncoder());
         memoryStream.Position = 0;
         return new FormFile(memoryStream, 0, memoryStream.Length, file.Name, file.FileName.Split('.').First() + ".png");
+    }
+    
+    
+    public string GetContentType(string fileName)
+    {
+        var extension = fileName.Split('.').Last();
+        return extension switch
+        {
+            "png" => "image/png",
+            "pdf" => "application/pdf",
+            _ => throw new Exception("Not supported file type")
+        };
     }
 }

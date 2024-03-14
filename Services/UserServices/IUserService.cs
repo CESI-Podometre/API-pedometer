@@ -9,6 +9,7 @@ public interface IUserService : IBaseService<User, UserCreateDto, UserUpdateDto>
 {
     public Task<User?> GetByIdentifier(string identifier);
     public Task<User?> Me(string identifier);
+    public Task<IEnumerable<User>> GetAllWithData();
     public Task<TokenResponse?> Login(UserLoginDto userLoginDto);
     public Task<User?> GetStats(string identifier, DateTime? startDate, DateTime? endDate);
 }

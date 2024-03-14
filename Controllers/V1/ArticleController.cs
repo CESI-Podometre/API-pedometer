@@ -47,7 +47,9 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
         return await TryExecuteControllerTask(async () =>
         {
             if (createDto.Image == null) throw new Exception("Image is required");
+            if (createDto.File == null) throw new Exception("File is required");
             createDto.ImagePath = await _fileService.AddDocument(createDto.Image);
+            createDto.FilePath = await _fileService.AddDocument(createDto.File);
             
             await ValidateDto(createDto);
             return await _articleService.Create(createDto);
@@ -62,12 +64,19 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
         {
             var badge = await _articleService.GetById(id);
             
-            if (updateDto.Image == null) throw new Exception("Image is required");
-            updateDto.ImagePath = await _fileService.UpdateDocument(updateDto.Image, badge.IllustrationPath);
+            if (updateDto.Image != null) updateDto.ImagePath = await _fileService.UpdateDocument(updateDto.Image, badge.IllustrationPath);
+            if (updateDto.File != null) updateDto.FilePath = await _fileService.UpdateDocument(updateDto.File, badge.FilePath);
             
             await ValidateDto(updateDto);
             return await _articleService.Update(id, updateDto);
         });
+    }
+    
+    [HttpPatch("{id:guid}/publish")]
+    [Authorize("admin")]
+    public async Task<IActionResult> UpdatePublishState(Guid id, bool state)
+    {
+        return await TryExecuteControllerTask(async () => await _articleService.UpdatePublishState(id, state));
     }
     
     [HttpDelete]

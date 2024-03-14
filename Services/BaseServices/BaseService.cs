@@ -28,10 +28,7 @@ public class BaseService<T, TCreateDto, TUpdateDto> : IBaseService<T, TCreateDto
     public virtual async Task<T> Update(Guid id, TUpdateDto updateDto)
     {
         var entity = await T.GetDbSet(_context).FindAsync(id);
-        if (entity == null)
-        {
-            throw new Exception("Entity not found");
-        }
+        if (entity == null) throw new Exception("Entity not found");
         entity.Update(updateDto);
         await _context.SaveChangesAsync();
         return entity;

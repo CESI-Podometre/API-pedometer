@@ -26,7 +26,8 @@ public class Badge : IBaseModel<Badge, BadgeCreateDto, BadgeUpdateDto>
     {
         Title = badgeUpdateDto.Title;
         Description = badgeUpdateDto.Description;
-        IconPath = badgeUpdateDto.ImagePath;
+        if (badgeUpdateDto.ImagePath != null) 
+            IconPath = badgeUpdateDto.ImagePath;
         UpdatedAt = DateTime.Now;
         return this;
     }

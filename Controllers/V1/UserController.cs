@@ -37,14 +37,21 @@ public class UserController : ControllerBaseExtended<User, UserCreateDto, UserUp
         return await TryExecuteControllerTask(async () => await _userService.GetByIdentifier(identifier));
     }
     
+    [Authorize("admin")]
+    [HttpGet]
+    public override async Task<IActionResult> GetAll()
+    {
+        return await TryExecuteControllerTask(async () => await _userService.GetAllWithData());
+    }
+    
     [HttpGet("me")]
     [Authorize("user")]
     public async Task<IActionResult> Me()
     {
         return await TryExecuteControllerTask(async () =>
         {
-            var identifier = User.Claims.FirstOrDefault(c => c.Type == "identifier")?.Value;
-            return await _userService.Me(identifier!);
+            var identifier = User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? throw new Exception("User identifier not found");
+            return await _userService.Me(identifier);
         });
     }
     

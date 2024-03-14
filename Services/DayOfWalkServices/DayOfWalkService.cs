@@ -41,10 +41,7 @@ public class DayOfWalkService : BaseService<DayOfWalk, DayOfWalkCreateDto, DayOf
             };
             await _context.DaysOfWalk.AddAsync(dayOfWalk);
         }
-        else
-        {
-            dayOfWalk.Steps = dayOfWalkUserCreateOrUpdateDto.Steps;
-        }
+        else dayOfWalk.Steps = dayOfWalkUserCreateOrUpdateDto.Steps;
         await _context.SaveChangesAsync();
         return dayOfWalk;
     }

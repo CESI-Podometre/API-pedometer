@@ -8,4 +8,5 @@ namespace StarFitApi.Services.ArticleServices;
 public interface IArticleService : IBaseService<Article, ArticleCreateDto, ArticleUpdateDto>
 {
     public Task<IEnumerable<Article>> GetUserContent();
+    public Task<Article?> UpdatePublishState(Guid id, bool state);
 }

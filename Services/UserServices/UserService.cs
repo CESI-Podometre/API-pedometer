@@ -62,6 +62,7 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
 
         var claims = new[]
         {
+            new Claim("id", user.Id.ToString()),
             new Claim("name", user.Identifier),
             new Claim("role", "user")
         };
@@ -93,6 +94,32 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
         if (user == null) throw new NotFoundException("User not found");
         user.FixDaysOfWalk(startDate, endDate);
         return user;
+    }
+
+    public async Task<IEnumerable<User>> GetAllWithData()
+    {
+        return await _context.Users
+            .Select(u => new {
+                user = u,
+                badges = _context.BadgesToUser
+                    .Where(btu => btu.UserId == u.Id)
+                    .Include(btu => btu.Badge)
+                    .Select(btu => btu.Badge)
+                    .ToList(),
+                daysOfWalk = _context.DaysOfWalk
+                    .Where(dow => dow.UserId == u.Id)
+                    .ToList()
+            })
+            .Select(objects => new User
+            {
+                Id = objects.user.Id,
+                Identifier = objects.user.Identifier,
+                CreatedAt = objects.user.CreatedAt,
+                UpdatedAt = objects.user.UpdatedAt,
+                Badges = objects.badges,
+                DaysOfWalk = objects.daysOfWalk
+            })
+            .ToListAsync();
     }
 
     #endregion

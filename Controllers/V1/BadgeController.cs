@@ -58,8 +58,7 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
         {
             var badge = await _badgeService.GetById(id);
             
-            if (updateDto.Image == null) throw new Exception("Image is required");
-            updateDto.ImagePath = await _fileService.UpdateDocument(updateDto.Image, badge.IconPath);
+            if (updateDto.Image != null) updateDto.ImagePath = await _fileService.UpdateDocument(updateDto.Image, badge.IconPath);
             
             await ValidateDto(updateDto);
             return await _badgeService.Update(id, updateDto);

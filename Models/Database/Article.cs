@@ -17,6 +17,7 @@ public class Article : IBaseModel<Article, ArticleCreateDto, ArticleUpdateDto>
             Title = articleCreateDto.Title,
             Description = articleCreateDto.Description,
             IllustrationPath = articleCreateDto.ImagePath,
+            FilePath = articleCreateDto.FilePath,
             StartDate = articleCreateDto.StartDate,
             EndDate = articleCreateDto.EndDate,
             CreatedAt = DateTime.Now,
@@ -28,7 +29,10 @@ public class Article : IBaseModel<Article, ArticleCreateDto, ArticleUpdateDto>
     {
         Title = articleUpdateDto.Title;
         Description = articleUpdateDto.Description;
-        IllustrationPath = articleUpdateDto.ImagePath;
+        if (articleUpdateDto.ImagePath != null) 
+            IllustrationPath = articleUpdateDto.ImagePath;
+        if (articleUpdateDto.FilePath != null) 
+            FilePath = articleUpdateDto.FilePath;
         StartDate = articleUpdateDto.StartDate;
         EndDate = articleUpdateDto.EndDate;
         UpdatedAt = DateTime.Now;
@@ -55,6 +59,10 @@ public class Article : IBaseModel<Article, ArticleCreateDto, ArticleUpdateDto>
     [Column("illustration_path")]
     [MaxLength(255)]
     public string IllustrationPath { get; set; } = null!;
+    
+    [Column("file_path")]
+    [MaxLength(255)]
+    public string FilePath { get; set; } = null!;
     
     [Column("published")]
     public bool Published { get; set; }

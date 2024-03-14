@@ -21,6 +21,12 @@ public class DataSeeder
         "https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvcHUyMzMxNjM5LWltYWdlXzItbDBqOXFvd3IucG5n.png",
         "https://pngimg.com/uploads/cat/cat_PNG50447.png"
     };
+    private readonly List<string> _articlePdfs = new()
+    {
+        "https://lyc-jules-ferry.fr/wp-content/uploads/2021/03/6Cadavre-exquis-ecrit-2.pdf",
+        "https://organzo.ca/wp-content/uploads/2013/05/FR_eggplant.pdf",
+        "https://www.icao.int/WACAF/Documents/Meetings/2015/Surveillance%20h%C3%A9listations/1.2%20Technique%20de%20l%27h%C3%A9licopt%C3%A8re.pdf",
+    };
     private List<User> _users = new();
     private List<DayOfWalk> _daysOfWalk = new();
     private List<Article> _articles = new();
@@ -84,6 +90,7 @@ public class DataSeeder
                 Title = $"Article {i}",
                 Description = $"Content {i}",
                 IllustrationPath = _articleImages[i % 3],
+                FilePath = _articlePdfs[i % 3],
                 StartDate = DateTime.Now,
                 Published = true,
                 CreatedAt = DateTime.Now,

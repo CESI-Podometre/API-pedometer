@@ -45,14 +45,13 @@ public class ChallengeService : BaseService<Challenge, ChallengeCreateDto, Chall
                 UpdatedAt = c.UpdatedAt,
                 Badge = c.Badge,
                 Progression = _context.DaysOfWalk
-                    .Where(dow => dow.UserId == id)
-                    .Where(dow => dow.Date >= c.StartDate)
-                    .Where(dow => dow.Date <= c.EndDate)
+                    .Where(dow => c.IsGlobal || dow.UserId == id)
+                    .Where(dow => c.StartDate <= dow.Date)
+                    .Where(dow => c.EndDate == null || c.EndDate >= dow.Date)
                     .Select(dow => dow.Steps)
                     .Sum()
             })
             .ToListAsync();
-
     }
 
     #endregion

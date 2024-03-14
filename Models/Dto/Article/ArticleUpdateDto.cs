@@ -6,8 +6,10 @@ public class ArticleUpdateDto : IDataTransferObject
 {
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;
-    public IFormFile Image { get; set; } = null!;
-    internal string ImagePath { get; set; } = null!;
+    public IFormFile? Image { get; set; } = null!;
+    public IFormFile? File { get; set; } = null!;
+    internal string? ImagePath { get; set; }
+    internal string? FilePath { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     
@@ -17,7 +19,6 @@ public class ArticleUpdateDto : IDataTransferObject
         {
             RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
             RuleFor(x => x.Description).NotEmpty().MaximumLength(255);
-            RuleFor(x => x.ImagePath).NotEmpty();
             RuleFor(x => x.StartDate).NotEmpty();
             RuleFor(x => x.EndDate).NotEmpty();
         }

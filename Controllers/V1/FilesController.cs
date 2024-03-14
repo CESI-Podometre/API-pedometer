@@ -38,7 +38,8 @@ public class FilesController : ControllerBase
         };
         Response.Headers.Add("Content-Disposition", contentDisposition.ToString());
         HttpContext.Response.Headers["Title"] = fileName;
-        return PhysicalFile(fullPath, $"image/{fileName.Split('.').Last()}");
+        var contentType = _fileService.GetContentType(fileName);
+        return PhysicalFile(fullPath, contentType);
     }
 
     #endregion
