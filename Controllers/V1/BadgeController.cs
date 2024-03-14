@@ -50,7 +50,7 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
         });
     }
     
-    [HttpPut]
+    [HttpPut("{id:guid}")]
     [Authorize("admin")]
     public override async Task<IActionResult> Update(Guid id, [FromForm] BadgeUpdateDto updateDto)
     {

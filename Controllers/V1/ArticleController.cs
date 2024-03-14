@@ -56,7 +56,7 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
         });
     }
     
-    [HttpPut]
+    [HttpPut("{id:guid}")]
     [Authorize("admin")]
     public override async Task<IActionResult> Update(Guid id, [FromForm] ArticleUpdateDto updateDto)
     {
