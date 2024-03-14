@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StarFitApi.Models.Dto.User;
 
 namespace StarFitApi.Models.Database;
@@ -58,30 +59,42 @@ public class User : IBaseModel<User, UserCreateDto, UserUpdateDto>
 
     public void FixDaysOfWalk(DateTime? firstDay = null, DateTime? lastDay = null)
     {
-        DaysOfWalk ??= new List<DayOfWalk> { new() { Date = DateTime.Now, UserId = Id, Steps = 0 } };
+        if (DaysOfWalk == null || !DaysOfWalk.Any())
+            DaysOfWalk = new List<DayOfWalk>() { new DayOfWalk { UserId = Id, Date = firstDay?.Date ?? DateTime.Now, Steps = 0 } };
+        firstDay ??= DaysOfWalk.Min(dow => dow.Date);
+        lastDay ??= DaysOfWalk.Max(dow => dow.Date);
         DaysOfWalk = DaysOfWalk.OrderBy(dow => dow.Date).ToList();
-        if (firstDay != null && DaysOfWalk!.First().Date.Date != ((DateTime)firstDay).Date)
+        if (DaysOfWalk.First().Date.Date != firstDay.Value.Date.Date)
         {
-            DaysOfWalk = new List<DayOfWalk> {new() {Date = (DateTime)firstDay, UserId = Id, Steps = 0}}
-                .Concat(DaysOfWalk!)
-                .ToList();
+            DaysOfWalk = DaysOfWalk.Prepend(new DayOfWalk
+            {
+                UserId = Id,
+                Date = firstDay.Value.Date,
+                Steps = 0
+            });
         }
-        FillDaysOfWalk(lastDay ?? DaysOfWalk.Last().Date);
+        FillMissingDays(lastDay.Value.Date);
     }
     
-    private void FillDaysOfWalk(DateTime lastDay, int index = 0)
+    private void FillMissingDays(DateTime lastDay, int index = 0)
     {
-        var dayOfWalk = DaysOfWalk!.ElementAt(index);
-        var nextDayOfWalk = DaysOfWalk!.ElementAt(index + 1);
-        if (dayOfWalk.Date.AddDays(1).Date != nextDayOfWalk.Date.Date)
+        if (DaysOfWalk == null) return;
+        if (DaysOfWalk.Count() <= index + 1) return;
+        var currentDay = DaysOfWalk.ElementAt(index).Date.Date;
+        var nextDay = DaysOfWalk.ElementAt(index + 1).Date.Date;
+        var supposedNextDay = currentDay.AddDays(1);
+        if (nextDay != supposedNextDay)
         {
-            DaysOfWalk = DaysOfWalk!.Take(index + 1)
-                .Concat(new List<DayOfWalk> {new() {Date = dayOfWalk.Date.AddDays(1), UserId = dayOfWalk.UserId, Steps = 0}})
-                .Concat(DaysOfWalk!.Skip(index + 1))
-                .ToList();
+            DaysOfWalk = DaysOfWalk.Take(index + 1).Concat(new List<DayOfWalk>
+            {
+                new()
+                {
+                    UserId = Id,
+                    Date = supposedNextDay,
+                    Steps = 0
+                }
+            }).Concat(DaysOfWalk.Skip(index + 1)).ToList();
         }
-        if (nextDayOfWalk.Date.Date != lastDay.Date) FillDaysOfWalk(lastDay, index + 1);
+        if (supposedNextDay.Date != lastDay.Date) FillMissingDays(lastDay, index + 1);
     }
-    
-    
 }

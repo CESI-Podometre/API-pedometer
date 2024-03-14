@@ -102,11 +102,22 @@ public class UserService : BaseService<User, UserCreateDto, UserUpdateDto>, IUse
     public async Task<User?> GetStats(string identifier, DateTime? startDate, DateTime? endDate)
     {
         var user = await _context.Users
-            .Include(u => u.DaysOfWalk!.Where(
-                dow =>
-                    (startDate == null || dow.Date >= startDate) &&
-                    (endDate == null || dow.Date <= endDate)
-            ))
+            .Select(u => new {
+                user = u,
+                dows = _context.DaysOfWalk
+                    .Where(dow => dow.UserId == u.Id)
+                    .Where(dow => startDate == null || ((DateTime)startDate).Date <= dow.Date)
+                    .Where(dow => endDate == null || ((DateTime)endDate).Date >= dow.Date)
+                    .ToList()
+            })
+            .Select(objects => new User
+            {
+                Id = objects.user.Id,
+                Identifier = objects.user.Identifier,
+                CreatedAt = objects.user.CreatedAt,
+                UpdatedAt = objects.user.UpdatedAt,
+                DaysOfWalk = objects.dows,
+            })
             .FirstOrDefaultAsync(u => u.Identifier == identifier);
         if (user == null) throw new NotFoundException("User not found");
         user.FixDaysOfWalk(startDate, endDate);
