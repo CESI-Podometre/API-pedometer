@@ -25,14 +25,15 @@ public class FileService : IFileService
     // Update a document
     public async Task<string> UpdateDocument(IFormFile file, string previous)
     {
-        DeleteDocument(previous);
+        if (!previous.StartsWith("http")) DeleteDocument(previous);
         return await AddDocument(file);
     }
     
     // Delete a document
     public string DeleteDocument(string previous)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), previous);
+        var basePath = GetDocumentByLink(previous);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), basePath);
         File.Delete(path);
         if (Directory.GetFiles(Path.GetDirectoryName(path)!).Length == 0)
         {
@@ -44,7 +45,8 @@ public class FileService : IFileService
 
     public string GetDocumentByLink(string fileName)
     {
-        return Path.Combine("files", fileName);
+        var name = fileName.Split("?fileName=").Last();
+        return Path.Combine("files", name);
     }
     
     private IFormFile ReduceImageWeight(IFormFile file)

@@ -86,7 +86,9 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
         return await TryExecuteControllerTask(async () =>
         {
             var badge = await _articleService.GetById(id);
+            
             _fileService.DeleteDocument(badge.IllustrationPath);
+            _fileService.DeleteDocument(badge.FilePath);
             return await _articleService.Delete(id);
         });
     }
