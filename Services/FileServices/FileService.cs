@@ -19,7 +19,7 @@ public class FileService : IFileService
         var stream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(stream);
         
-        return Path.Combine("files", uniqueFileName);
+        return $"files?fileName={uniqueFileName}";
     }
     
     // Update a document
