@@ -33,8 +33,8 @@ public class ArticleController : ControllerBaseExtended<Article, ArticleCreateDt
     
     #region Methods
     
-    [Authorize("user")]
     [HttpGet("user-content")]
+    [Authorize("user")]
     public async Task<IActionResult> GetUserContent()
     {
         return await TryExecuteControllerTask(async () => await _articleService.GetUserContent());

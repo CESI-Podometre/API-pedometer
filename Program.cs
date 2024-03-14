@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
@@ -24,9 +25,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddCors(options =>
-    options.AddPolicy("AllowSpecificOrigin",
+    options.AddPolicy("AllowAll",
         policyBuilder => policyBuilder.AllowAnyOrigin()
             .AllowAnyHeader()
+            .SetIsOriginAllowed(_ => true)
             .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
         )
     );
@@ -97,20 +99,20 @@ builder.Services.AddAuthorization(options =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("role", "user");
+        policy.RequireClaim(ClaimTypes.Role, "user");
     });
     options.AddPolicy("admin", policy =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
         // authorized for admin and superAdmin
-        policy.RequireClaim("role", "admin", "superAdmin");
+        policy.RequireClaim(ClaimTypes.Role, "admin", "superAdmin");
     });
     options.AddPolicy("superAdmin", policy =>
     {
         policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("role", "superAdmin");
+        policy.RequireClaim(ClaimTypes.Role, "superAdmin");
     });
 });
 
@@ -128,9 +130,6 @@ builder.Services
     });
 
 var app = builder.Build();
-
-app.UseMiddleware<OptionsFixerMiddleware>();
-
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
 app.UseSwagger();
@@ -145,6 +144,8 @@ app.UseSwaggerUI(options =>
         options.SwaggerEndpoint(baseUrl, name);
     }
 });
+
+app.UseMiddleware<OptionsFixerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

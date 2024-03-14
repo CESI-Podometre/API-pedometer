@@ -46,7 +46,8 @@ public class SuperUserService : BaseService<SuperUser, SuperUserCreateDto, Super
         
         if (!BCrypt.Net.BCrypt.Verify(superUserLoginDto.Password, superUser.Password)) throw new Exception("Invalid password");
         
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+        var key = _config.GetSection("Jwt:Key").Get<string>() ?? throw new Exception("Jwt:Key not found in appsettings.json");
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         
         var claims = new[]
