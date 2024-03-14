@@ -30,8 +30,9 @@ public class FileService : IFileService
     }
     
     // Delete a document
-    public string DeleteDocument(string previous)
+    public void DeleteDocument(string previous)
     {
+        if (previous.StartsWith("http")) return;
         var basePath = GetDocumentByLink(previous);
         var path = Path.Combine(Directory.GetCurrentDirectory(), basePath);
         File.Delete(path);
@@ -39,8 +40,6 @@ public class FileService : IFileService
         {
             Directory.Delete(Path.GetDirectoryName(path)!);
         }
-        
-        return previous;
     }
 
     public string GetDocumentByLink(string fileName)
