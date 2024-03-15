@@ -35,7 +35,14 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
     #endregion
     
     #region Methods
-    
+
+    [HttpGet]
+    [Authorize]
+    public override Task<IActionResult> GetAll()
+    {
+        return base.GetAll();
+    }
+
     [HttpPost]
     [Authorize("admin")]
     public override async Task<IActionResult> Create([FromForm] BadgeCreateDto createDto)
