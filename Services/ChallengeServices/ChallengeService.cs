@@ -40,6 +40,7 @@ public class ChallengeService : BaseService<Challenge, ChallengeCreateDto, Chall
                 StartDate = c.StartDate,
                 EndDate = c.EndDate,
                 IsGlobal = c.IsGlobal,
+                IllustrationPath = c.IllustrationPath,
                 Objective = c.Objective,
                 CreatedAt = c.CreatedAt,
                 UpdatedAt = c.UpdatedAt,
