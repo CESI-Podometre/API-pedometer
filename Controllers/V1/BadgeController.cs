@@ -2,12 +2,9 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarFitApi.Helpers;
-using StarFitApi.Models;
 using StarFitApi.Models.Database;
 using StarFitApi.Models.Dto.Badge;
-using StarFitApi.Models.Dto.Challenge;
 using StarFitApi.Services.BadgeServices;
-using StarFitApi.Services.ChallengeServices;
 using StarFitApi.Services.FileServices;
 
 namespace StarFitApi.Controllers.V1;
@@ -36,11 +33,11 @@ public class BadgeController : ControllerBaseExtended<Badge, BadgeCreateDto, Bad
     
     #region Methods
 
-    [HttpGet]
-    [Authorize]
-    public override Task<IActionResult> GetAll()
+    [HttpGet("user-content")]
+    [Authorize("user")]
+    public async Task<IActionResult> GetUserContent()
     {
-        return base.GetAll();
+        return await TryExecuteControllerTask(async () => await _badgeService.GetAll());
     }
 
     [HttpPost]
